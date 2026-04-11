@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Cloud Era Technology</title>
+<style>
+  :root{
+    --navy:#0A1628;
+    --navy2:#0D1F3C;
+    --blue:#1565C0;
+    --accent:#00B4D8;
+    --accent2:#00E5FF;
+    --green:#00C896;
+    --white:#FFFFFF;
+    --gray:#8A9BB0;
+    --light:#F0F4FA;
+    --card:#111E35;
+    --border:#1E3A5F;
+    --grad:linear-gradient(135deg,#00B4D8,#1565C0);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--navy);color:var(--white);line-height:1.7;}
+
+  /* NAV */
+  nav{position:fixed;top:0;width:100%;z-index:999;background:rgba(10,22,40,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5%;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px;}
+  .logo{font-size:1.3rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .logo span{font-weight:300;}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{color:var(--gray);text-decoration:none;font-size:.9rem;font-weight:500;transition:.2s;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-cta{background:var(--grad);color:#fff;border:none;padding:.55rem 1.4rem;border-radius:6px;font-weight:600;cursor:pointer;font-size:.9rem;text-decoration:none;}
+
+  /* PAGES */
+  .page{display:none;padding-top:68px;}
+  .page.active{display:block;}
+
+  /* HERO */
+  .hero{min-height:92vh;display:flex;align-items:center;padding:4rem 5%;background:radial-gradient(ellipse at 60% 40%,rgba(21,101,192,.25) 0%,transparent 60%),var(--navy);}
+  .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);border-radius:20px;padding:.3rem 1rem;font-size:.8rem;color:var(--accent);margin-bottom:1.5rem;}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.15;max-width:720px;margin-bottom:1.2rem;}
+  .hero h1 .hl{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{font-size:1.15rem;color:var(--gray);max-width:580px;margin-bottom:2rem;}
+  .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+  .btn-primary{background:var(--grad);color:#fff;border:none;padding:.8rem 2rem;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;text-decoration:none;display:inline-block;transition:opacity .2s;}
+  .btn-primary:hover{opacity:.9;}
+  .btn-outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent);padding:.8rem 2rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem;text-decoration:none;display:inline-block;transition:.2s;}
+  .btn-outline:hover{background:rgba(0,180,216,.1);}
+  .hero-metrics{display:flex;gap:3rem;margin-top:3.5rem;flex-wrap:wrap;}
+  .metric{border-left:2px solid var(--accent);padding-left:1rem;}
+  .metric strong{display:block;font-size:2rem;font-weight:800;color:var(--accent2);}
+  .metric span{font-size:.85rem;color:var(--gray);}
+
+  /* LOGOS */
+  .logos{padding:2rem 5%;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .logos p{text-align:center;color:var(--gray);font-size:.85rem;margin-bottom:1.2rem;}
+  .logo-row{display:flex;gap:2.5rem;justify-content:center;align-items:center;flex-wrap:wrap;}
+  .logo-pill{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.5rem 1.4rem;font-weight:700;font-size:.95rem;color:var(--gray);}
+
+  /* SECTIONS */
+  section{padding:5rem 5%;}
+  .section-label{font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;}
+  .section-title{font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:800;line-height:1.2;margin-bottom:1rem;}
+  .section-sub{color:var(--gray);max-width:560px;margin-bottom:3rem;font-size:1rem;}
+
+  /* PROBLEM */
+  .problem{background:var(--navy2);}
+  .prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;}
+  .prob-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
+  .prob-icon{font-size:2rem;margin-bottom:.8rem;}
+  .prob-card h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;}
+  .prob-card p{font-size:.88rem;color:var(--gray);}
+
+  /* SERVICES */
+  .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+  .svc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;transition:.25s;}
+  .svc-card:hover{border-color:var(--accent);transform:translateY(-4px);}
+  .svc-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(0,180,216,.2),rgba(21,101,192,.2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.2rem;}
+  .svc-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.6rem;}
+  .svc-card p{font-size:.88rem;color:var(--gray);margin-bottom:1rem;}
+  .svc-list{list-style:none;}
+  .svc-list li{font-size:.84rem;color:var(--gray);padding:.25rem 0;display:flex;gap:.5rem;}
+  .svc-list li::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+  @media(max-width:700px){.about-grid{grid-template-columns:1fr;}}
+  .about-values{display:flex;flex-direction:column;gap:1rem;margin-top:2rem;}
+  .value-row{display:flex;gap:1rem;align-items:flex-start;}
+  .value-dot{width:36px;height:36px;background:rgba(0,180,216,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;}
+  .value-row h4{font-size:.95rem;font-weight:700;margin-bottom:.2rem;}
+  .value-row p{font-size:.84rem;color:var(--gray);}
+  .stat-block{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+  .stat-item strong{display:block;font-size:2rem;font-weight:800;color:var(--accent2);}
+  .stat-item span{font-size:.82rem;color:var(--gray);}
+
+  /* PRICING */
+  .pricing{background:var(--navy2);}
+  .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+  .plan{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;position:relative;}
+  .plan.featured{border-color:var(--accent);background:linear-gradient(160deg,rgba(0,180,216,.08),var(--card));}
+  .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;font-size:.75rem;font-weight:700;padding:.25rem .9rem;border-radius:20px;}
+  .plan h3{font-size:1.1rem;font-weight:700;margin-bottom:.3rem;}
+  .plan .price{font-size:2rem;font-weight:800;color:var(--accent2);margin:.8rem 0 .3rem;}
+  .plan .price-note{font-size:.8rem;color:var(--gray);margin-bottom:1.2rem;}
+  .plan-features{list-style:none;margin-bottom:1.5rem;}
+  .plan-features li{font-size:.84rem;color:var(--gray);padding:.3rem 0;display:flex;gap:.5rem;border-bottom:1px solid var(--border);}
+  .plan-features li::before{content:"✓";color:var(--green);font-weight:700;}
+
+  /* CASE STUDIES */
+  .case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
+  .case-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;display:flex;flex-direction:column;gap:1rem;}
+  .case-tag{font-size:.75rem;font-weight:700;color:var(--accent);background:rgba(0,180,216,.1);border-radius:20px;padding:.2rem .8rem;display:inline-block;}
+  .case-card h3{font-size:1.05rem;font-weight:700;}
+  .case-challenge,.case-solution{font-size:.84rem;color:var(--gray);}
+  .case-results{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem;}
+  .result-pill{background:rgba(0,200,150,.1);border:1px solid rgba(0,200,150,.3);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:var(--green);}
+
+  /* TESTIMONIALS */
+  .testi{background:var(--navy2);}
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+  .testi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.8rem;}
+  .stars{color:#F5A623;font-size:1rem;margin-bottom:.8rem;}
+  .testi-card p{font-size:.88rem;color:var(--gray);margin-bottom:1.2rem;font-style:italic;}
+  .testi-author{display:flex;gap:.8rem;align-items:center;}
+  .avatar{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;}
+  .testi-author div strong{display:block;font-size:.88rem;}
+  .testi-author div span{font-size:.78rem;color:var(--gray);}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+  @media(max-width:700px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-info h2{font-size:1.8rem;font-weight:800;margin-bottom:1rem;}
+  .contact-info p{color:var(--gray);font-size:.92rem;margin-bottom:2rem;}
+  .contact-item{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .c-icon{width:40px;height:40px;background:rgba(0,180,216,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+  .contact-item strong{display:block;font-size:.88rem;margin-bottom:.2rem;}
+  .contact-item span{font-size:.84rem;color:var(--gray);}
+  .form-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;}
+  .form-card h3{font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;}
+  .form-group{margin-bottom:1.2rem;}
+  .form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--gray);margin-bottom:.4rem;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;color:var(--white);font-size:.9rem;outline:none;font-family:inherit;transition:.2s;}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent);}
+  .form-group textarea{resize:vertical;min-height:100px;}
+  .form-group select option{background:var(--navy);}
+
+  /* FOOTER */
+  footer{background:var(--navy2);border-top:1px solid var(--border);padding:3rem 5% 1.5rem;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem;}
+  @media(max-width:700px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  .footer-brand p{font-size:.84rem;color:var(--gray);margin-top:.7rem;max-width:240px;}
+  .footer-col h4{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem;}
+  .footer-col a{display:block;font-size:.84rem;color:var(--gray);text-decoration:none;margin-bottom:.4rem;transition:.2s;}
+  .footer-col a:hover{color:var(--white);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.8rem;color:var(--gray);flex-wrap:wrap;gap:.5rem;}
+
+  /* NAV ACTIVE */
+  .nav-links a.active{color:var(--white);}
+
+  /* PROCESS */
+  .process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;position:relative;}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;}
+  .step-num{width:44px;height:44px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;margin:0 auto 1rem;}
+  .step h4{font-size:.95rem;font-weight:700;margin-bottom:.4rem;}
+  .step p{font-size:.82rem;color:var(--gray);}
+
+  /* CTA BANNER */
+  .cta-banner{background:linear-gradient(135deg,#0D3B6E,#0A2540);border:1px solid var(--border);border-radius:20px;padding:3.5rem;text-align:center;margin:0 5% 4rem;}
+  .cta-banner h2{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;margin-bottom:.8rem;}
+  .cta-banner p{color:var(--gray);margin-bottom:2rem;}
+
+  @media(max-width:900px){
+    .nav-links{display:none;}
+    .hero-metrics{gap:2rem;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Cloud<span>Era</span> Technology</div>
+    <ul class="nav-links">
+      <li><a href="#" onclick="show('home')" class="active" id="nav-home">Home</a></li>
+      <li><a href="#" onclick="show('about')" id="nav-about">About</a></li>
+      <li><a href="#" onclick="show('services')" id="nav-services">Services</a></li>
+      <li><a href="#" onclick="show('pricing')" id="nav-pricing">Pricing</a></li>
+      <li><a href="#" onclick="show('cases')" id="nav-cases">Case Studies</a></li>
+      <li><a href="#" onclick="show('contact')" id="nav-contact">Contact</a></li>
+    </ul>
+    <a href="#" onclick="show('contact')" class="nav-cta">Get Free Audit →</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero-badge">🚀 Cloud + AI Consulting — Built for Growth</div>
+      <h1>Cut Your Cloud Bill by <span class="hl">20–40%</span> While Building Faster</h1>
+      <p>Cloud Era Technology helps startups and mid-size companies get control of their infrastructure — reducing waste, automating operations, and deploying AI that actually works in production.</p>
+      <div class="hero-btns">
+        <a href="#" onclick="show('contact')" class="btn-primary">Get a Free Cloud Audit</a>
+        <a href="#" onclick="show('services')" class="btn-outline">See What We Do</a>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric"><strong>40%</strong><span>Average cost reduction</span></div>
+        <div class="metric"><strong>3×</strong><span>Faster deployment cycles</span></div>
+        <div class="metric"><strong>100%</strong><span>Production-grade delivery</span></div>
+        <div class="metric"><strong>50+</strong><span>Cloud projects delivered</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS -->
+  <div class="logos">
+    <p>We work across leading cloud platforms and tools</p>
+    <div class="logo-row">
+      <div class="logo-pill">AWS</div>
+      <div class="logo-pill">Azure</div>
+      <div class="logo-pill">GCP</div>
+      <div class="logo-pill">Terraform</div>
+      <div class="logo-pill">Kubernetes</div>
+      <div class="logo-pill">GitHub Actions</div>
+      <div class="logo-pill">MLflow</div>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="problem">
+    <div class="section-label">The Problem</div>
+    <div class="section-title">Most companies are overpaying for cloud — and don't know it</div>
+    <div class="section-sub">Cloud bills grow fast. Security gaps widen. Deployments stay manual. These are the three problems we eliminate first.</div>
+    <div class="prob-grid">
+      <div class="prob-card"><div class="prob-icon">💸</div><h3>Runaway Cloud Costs</h3><p>Over-provisioned instances, forgotten resources, and inefficient storage quietly drain your budget every month.</p></div>
+      <div class="prob-card"><div class="prob-icon">🐌</div><h3>Slow, Manual Deployments</h3><p>Engineering time spent on repetitive releases is time not spent building product or serving customers.</p></div>
+      <div class="prob-card"><div class="prob-icon">🔓</div><h3>Security Blind Spots</h3><p>Misconfigured IAM roles, unencrypted data, and missed compliance requirements create real business risk.</p></div>
+      <div class="prob-card"><div class="prob-icon">🤖</div><h3>AI Stuck in Notebooks</h3><p>ML models that never reach production generate zero business value — no matter how good the accuracy is.</p></div>
+    </div>
+  </section>
+
+  <!-- SERVICES PREVIEW -->
+  <section>
+    <div class="section-label">What We Do</div>
+    <div class="section-title">Four services. One goal: measurable results.</div>
+    <div class="section-sub">We don't sell hours. We deliver outcomes — cost reduction, faster releases, stronger security, and AI in production.</div>
+    <div class="svc-grid">
+      <div class="svc-card"><div class="svc-icon">💰</div><h3>Cloud Cost Optimization</h3><p>We find and eliminate infrastructure waste, guaranteed 20–40% cost reduction within 90 days.</p><ul class="svc-list"><li>FinOps assessment and benchmarking</li><li>Right-sizing compute & storage</li><li>Reserved instance strategy</li></ul></div>
+      <div class="svc-card"><div class="svc-icon">⚙️</div><h3>DevOps & Automation</h3><p>Replace manual processes with CI/CD pipelines and infrastructure-as-code that your team can own.</p><ul class="svc-list"><li>CI/CD pipeline setup</li><li>Terraform IaC implementation</li><li>Automated testing & deployments</li></ul></div>
+      <div class="svc-card"><div class="svc-icon">🔐</div><h3>Cloud Security</h3><p>Close security gaps before they become incidents. We make compliance a side effect of good engineering.</p><ul class="svc-list"><li>IAM audit and hardening</li><li>Encryption and data governance</li><li>Continuous vulnerability monitoring</li></ul></div>
+      <div class="svc-card"><div class="svc-icon">🧠</div><h3>MLOps & AI Deployment</h3><p>We take your models from notebooks to production — with monitoring, versioning, and automated retraining.</p><ul class="svc-list"><li>Model serving infrastructure</li><li>Automated ML pipelines</li><li>Drift detection & monitoring</li></ul></div>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section style="background:var(--navy2)">
+    <div class="section-label">Our Process</div>
+    <div class="section-title">From audit to outcome in 4 steps</div>
+    <div class="section-sub">No lengthy onboarding. No vague roadmaps. We move fast and show value early.</div>
+    <div class="process-steps">
+      <div class="step"><div class="step-num">1</div><h4>Free Cloud Audit</h4><p>We analyze your infrastructure, costs, and security posture at no cost — and deliver a findings report.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Prioritized Roadmap</h4><p>We identify the highest-impact changes first — so you see ROI within weeks, not months.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>Implementation</h4><p>Our engineers execute the roadmap alongside your team — writing production-grade code and automation.</p></div>
+      <div class="step"><div class="step-num">4</div><h4>Handover & Support</h4><p>We document everything and train your team so you're never dependent on us to keep things running.</p></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi">
+    <div class="section-label">Client Results</div>
+    <div class="section-title">Trusted by engineering teams who ship fast</div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="stars">★★★★★</div><p>"We were spending $42K/month on AWS with no visibility. Cloud Era cut it to $26K within 60 days and we didn't lose a single feature."</p><div class="testi-author"><div class="avatar">MR</div><div><strong>Michael R.</strong><span>VP Engineering, SaaS Startup</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p>"Our deployment cycle went from 3 days to 4 hours. The CI/CD pipeline they built just works — our team loves it."</p><div class="testi-author"><div class="avatar">SA</div><div><strong>Sophia A.</strong><span>CTO, E-commerce Platform</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p>"We had an ML model sitting in a notebook for 6 months. Cloud Era had it in production in 3 weeks. It's now processing 10K predictions daily."</p><div class="testi-author"><div class="avatar">DK</div><div><strong>David K.</strong><span>Head of Data, Fintech Company</span></div></div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <h2>Start with a Free Cloud Audit — No Commitment Required</h2>
+    <p>We'll review your current cloud setup and show you exactly where you're overspending and what to fix first.</p>
+    <a href="#" onclick="show('contact')" class="btn-primary">Book Your Free Audit →</a>
+  </div>
+
+</div>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<div id="page-about" class="page">
+  <section>
+    <div class="section-label">About Us</div>
+    <div class="section-title">We are engineers who got tired of watching cloud budgets burn</div>
+    <div class="about-grid">
+      <div>
+        <p style="color:var(--gray);margin-bottom:1.5rem;">Cloud Era Technology was founded by cloud architects and DevOps engineers who spent years inside fast-growing companies watching the same problems repeat: ballooning infrastructure bills, broken deployment pipelines, and AI projects that never made it to production.</p>
+        <p style="color:var(--gray);margin-bottom:1.5rem;">We started Cloud Era because we knew these problems were solvable — not with more tooling, but with the right expertise applied in the right order.</p>
+        <p style="color:var(--gray)">Today we work with startups, SaaS companies, and mid-size businesses across AWS, Azure, and GCP — helping them build the infrastructure they need to grow without waste.</p>
+        <div class="about-values">
+          <div class="value-row"><div class="value-dot">🎯</div><div><h4>Our Mission</h4><p>To make cloud infrastructure a growth asset, not a cost center — for every company we work with.</p></div></div>
+          <div class="value-row"><div class="value-dot">🌐</div><div><h4>Our Vision</h4><p>A world where every engineering team has access to the infrastructure expertise that only the largest companies currently enjoy.</p></div></div>
+          <div class="value-row"><div class="value-dot">📐</div><div><h4>Our Approach</h4><p>We prioritize impact. We fix the most expensive problems first and always leave your team more capable than we found them.</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="stat-block" style="margin-bottom:1.5rem;">
+          <div class="stat-item"><strong>50+</strong><span>Cloud projects delivered</span></div>
+          <div class="stat-item"><strong>$4M+</strong><span>Client cloud savings</span></div>
+          <div class="stat-item"><strong>35%</strong><span>Average cost reduction</span></div>
+          <div class="stat-item"><strong>3×</strong><span>Average deploy frequency increase</span></div>
+        </div>
+        <div class="svc-card">
+          <h3 style="margin-bottom:1rem;">Our Core Expertise</h3>
+          <ul class="svc-list">
+            <li>AWS, Azure, and GCP certified architects</li>
+            <li>Terraform, Pulumi, and CloudFormation</li>
+            <li>GitHub Actions, ArgoCD, Jenkins</li>
+            <li>Kubernetes, ECS, and serverless architectures</li>
+            <li>MLflow, Kubeflow, SageMaker MLOps</li>
+            <li>SOC2, ISO 27001, GDPR compliance engineering</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<div id="page-services" class="page">
+  <section>
+    <div class="section-label">Services</div>
+    <div class="section-title">Everything your cloud infrastructure needs to perform</div>
+    <div class="section-sub">Each service is scoped, priced, and delivered to produce a measurable business outcome — not just a deliverable.</div>
+
+    <!-- S1 -->
+    <div style="margin-bottom:3rem;">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;"><div class="svc-icon" style="width:56px;height:56px;font-size:1.6rem;">💰</div><h2 style="font-size:1.4rem;font-weight:800;">Cloud Cost Optimization (FinOps)</h2></div>
+      <p style="color:var(--gray);max-width:640px;margin-bottom:1.5rem;">Most companies are overspending on cloud by 30–50%. We find exactly where your money is going, fix it, and put controls in place so it doesn't happen again. Our work comes with a guaranteed 20–40% cost reduction commitment.</p>
+      <div class="svc-grid">
+        <div class="prob-card"><h3>Cost Discovery & Audit</h3><p>Full analysis of your AWS/Azure/GCP bill. We identify unused resources, oversized instances, and inefficient storage patterns.</p></div>
+        <div class="prob-card"><h3>Right-Sizing & Reserved Capacity</h3><p>We match your compute and database sizing to actual workload demands and build a reserved instance strategy that fits your growth plan.</p></div>
+        <div class="prob-card"><h3>FinOps Governance</h3><p>Cost tagging, budget alerts, and dashboards so your team has real-time visibility and accountability over every dollar spent.</p></div>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div style="margin-bottom:3rem;">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;"><div class="svc-icon" style="width:56px;height:56px;font-size:1.6rem;">⚙️</div><h2 style="font-size:1.4rem;font-weight:800;">DevOps & Automation</h2></div>
+      <p style="color:var(--gray);max-width:640px;margin-bottom:1.5rem;">Manual deployments slow your team down and introduce risk. We automate your entire delivery pipeline — from code commit to production — so your engineers can focus on product, not process.</p>
+      <div class="svc-grid">
+        <div class="prob-card"><h3>CI/CD Pipeline Design</h3><p>End-to-end pipeline setup using GitHub Actions, GitLab CI, or Jenkins with automated testing, security scanning, and rollback capabilities.</p></div>
+        <div class="prob-card"><h3>Infrastructure as Code</h3><p>We write and maintain your infrastructure in Terraform — versioned, repeatable, and team-owned. No more clicking through consoles.</p></div>
+        <div class="prob-card"><h3>Container & Orchestration</h3><p>Kubernetes cluster design and management, ECS task definitions, and service mesh configuration for scalable microservices architectures.</p></div>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div style="margin-bottom:3rem;">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;"><div class="svc-icon" style="width:56px;height:56px;font-size:1.6rem;">🔐</div><h2 style="font-size:1.4rem;font-weight:800;">Cloud Security (DevSecOps)</h2></div>
+      <p style="color:var(--gray);max-width:640px;margin-bottom:1.5rem;">Security should be built into your infrastructure, not bolted on after a breach. We embed security controls into every layer — identity, data, networking, and deployment pipelines.</p>
+      <div class="svc-grid">
+        <div class="prob-card"><h3>IAM Hardening</h3><p>Least-privilege access policies, MFA enforcement, service account hygiene, and cross-account role management.</p></div>
+        <div class="prob-card"><h3>Compliance Engineering</h3><p>SOC2, GDPR, HIPAA, and ISO 27001 compliance controls built into your infrastructure with automated evidence collection.</p></div>
+        <div class="prob-card"><h3>Continuous Monitoring</h3><p>Vulnerability scanning, intrusion detection, and SIEM integration so threats are caught before they cause damage.</p></div>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;"><div class="svc-icon" style="width:56px;height:56px;font-size:1.6rem;">🧠</div><h2 style="font-size:1.4rem;font-weight:800;">MLOps & AI Deployment</h2></div>
+      <p style="color:var(--gray);max-width:640px;margin-bottom:1.5rem;">Building an ML model is the easy part. Getting it to run reliably in production at scale — that's where most teams get stuck. We close that gap with production-grade MLOps infrastructure.</p>
+      <div class="svc-grid">
+        <div class="prob-card"><h3>Model Serving Infrastructure</h3><p>Deploy models via REST APIs, batch pipelines, or real-time streaming using SageMaker, Vertex AI, or custom Kubernetes deployments.</p></div>
+        <div class="prob-card"><h3>ML Pipeline Automation</h3><p>Automated training, evaluation, and deployment pipelines using MLflow, Kubeflow, or Airflow — integrated with your CI/CD workflow.</p></div>
+        <div class="prob-card"><h3>Monitoring & Drift Detection</h3><p>Production model monitoring for accuracy degradation, data drift, and latency — with automated alerts and retraining triggers.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <h2>Not sure which service you need first?</h2>
+    <p>Start with our free cloud audit. We'll tell you exactly where to focus for maximum ROI.</p>
+    <a href="#" onclick="show('contact')" class="btn-primary">Get Free Audit →</a>
+  </div>
+</div>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<div id="page-pricing" class="page">
+  <section class="pricing">
+    <div class="section-label">Engagement Models</div>
+    <div class="section-title">Straightforward pricing. No surprise invoices.</div>
+    <div class="section-sub">We offer three engagement tiers based on scope. Every engagement starts with a free cloud audit so we can scope accurately before you commit.</div>
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="plan">
+        <h3>Starter</h3>
+        <div style="font-size:.85rem;color:var(--gray);margin:.4rem 0 .8rem;">For early-stage startups</div>
+        <div class="price">$3,500<span style="font-size:1rem;color:var(--gray)">/mo</span></div>
+        <div class="price-note">3-month minimum engagement</div>
+        <ul class="plan-features">
+          <li>Cloud cost audit + optimization</li>
+          <li>Basic CI/CD pipeline setup</li>
+          <li>IAM security review and hardening</li>
+          <li>1 cloud platform (AWS, Azure, or GCP)</li>
+          <li>Monthly reporting and recommendations</li>
+          <li>Email support (48-hour SLA)</li>
+        </ul>
+        <a href="#" onclick="show('contact')" class="btn-outline" style="width:100%;text-align:center;display:block;">Get Started</a>
+      </div>
+      <!-- Growth -->
+      <div class="plan featured">
+        <div class="plan-badge">Most Popular</div>
+        <h3>Growth</h3>
+        <div style="font-size:.85rem;color:var(--gray);margin:.4rem 0 .8rem;">For scaling SaaS companies</div>
+        <div class="price">$8,500<span style="font-size:1rem;color:var(--gray)">/mo</span></div>
+        <div class="price-note">3-month minimum engagement</div>
+        <ul class="plan-features">
+          <li>Everything in Starter</li>
+          <li>Full DevOps automation (IaC + CI/CD)</li>
+          <li>Multi-environment Kubernetes setup</li>
+          <li>DevSecOps with continuous scanning</li>
+          <li>Up to 2 cloud platforms</li>
+          <li>Dedicated Slack channel + weekly calls</li>
+          <li>24-hour support SLA</li>
+        </ul>
+        <a href="#" onclick="show('contact')" class="btn-primary" style="width:100%;text-align:center;display:block;">Get Started</a>
+      </div>
+      <!-- Enterprise -->
+      <div class="plan">
+        <h3>Enterprise</h3>
+        <div style="font-size:.85rem;color:var(--gray);margin:.4rem 0 .8rem;">For complex, multi-cloud environments</div>
+        <div class="price">Custom</div>
+        <div class="price-note">Scoped after free audit</div>
+        <ul class="plan-features">
+          <li>Everything in Growth</li>
+          <li>MLOps & AI deployment included</li>
+          <li>Multi-cloud architecture design</li>
+          <li>Compliance engineering (SOC2, HIPAA)</li>
+          <li>Embedded engineer (part-time or full-time)</li>
+          <li>Executive-level reporting and QBRs</li>
+          <li>4-hour critical support SLA</li>
+        </ul>
+        <a href="#" onclick="show('contact')" class="btn-outline" style="width:100%;text-align:center;display:block;">Talk to Us</a>
+      </div>
+    </div>
+    <div style="margin-top:3rem;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;">
+      <div><strong style="display:block;margin-bottom:.4rem;">🔍 Free Audit Included</strong><span style="font-size:.84rem;color:var(--gray);">Every engagement begins with a no-cost infrastructure review.</span></div>
+      <div><strong style="display:block;margin-bottom:.4rem;">📉 Guaranteed Cost Reduction</strong><span style="font-size:.84rem;color:var(--gray);">We commit to 20–40% cloud cost savings or we extend the engagement at no charge.</span></div>
+      <div><strong style="display:block;margin-bottom:.4rem;">🤝 No Lock-In</strong><span style="font-size:.84rem;color:var(--gray);">Month-to-month after the initial term. We earn your continued business by delivering results.</span></div>
+      <div><strong style="display:block;margin-bottom:.4rem;">📋 Fixed Scope Projects</strong><span style="font-size:.84rem;color:var(--gray);">Prefer a one-time project? We offer fixed-scope engagements for specific deliverables.</span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ CASE STUDIES ═══════════════ -->
+<div id="page-cases" class="page">
+  <section>
+    <div class="section-label">Case Studies</div>
+    <div class="section-title">Real projects. Documented results.</div>
+    <div class="section-sub">Each of these engagements followed the same process: audit first, prioritize by ROI, execute fast, and measure everything.</div>
+    <div class="case-grid">
+
+      <div class="case-card">
+        <div class="case-tag">Cloud Cost Optimization</div>
+        <h3>SaaS Company Cuts AWS Bill by 38% Without Touching Product</h3>
+        <p class="case-challenge"><strong style="color:var(--white)">Challenge:</strong> A 60-person SaaS company was spending $48,000/month on AWS. Engineers had no visibility into what was driving costs, and the bill had grown 80% in 12 months.</p>
+        <p class="case-solution"><strong style="color:var(--white)">What We Did:</strong> Conducted a full cost audit revealing $18K/month in idle EC2 instances, unattached EBS volumes, and over-provisioned RDS. Implemented right-sizing, reserved instances, and automated shutdown schedules for non-prod environments.</p>
+        <div class="case-results">
+          <div class="result-pill">38% cost reduction</div>
+          <div class="result-pill">$18K/mo saved</div>
+          <div class="result-pill">60-day delivery</div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">DevOps Automation</div>
+        <h3>E-Commerce Platform Reduces Deployment Time from 3 Days to 4 Hours</h3>
+        <p class="case-challenge"><strong style="color:var(--white)">Challenge:</strong> A fast-growing e-commerce company had manual deployment processes requiring 3 days of engineering coordination. Releases happened twice a month, blocking product iteration.</p>
+        <p class="case-solution"><strong style="color:var(--white)">What We Did:</strong> Designed and implemented a full CI/CD pipeline on GitHub Actions with automated testing, staging environment promotion, and one-click production deployments. Migrated infrastructure to Terraform for repeatable provisioning.</p>
+        <div class="case-results">
+          <div class="result-pill">3 days → 4 hours</div>
+          <div class="result-pill">8× deploy frequency</div>
+          <div class="result-pill">Zero rollback incidents</div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">Cloud Security</div>
+        <h3>Fintech Startup Achieves SOC2 Type II Readiness in 10 Weeks</h3>
+        <p class="case-challenge"><strong style="color:var(--white)">Challenge:</strong> A fintech startup needed SOC2 Type II certification to close enterprise deals. Their AWS environment had 140+ IAM policy violations and no audit logging in place.</p>
+        <p class="case-solution"><strong style="color:var(--white)">What We Did:</strong> Completed a full IAM audit and remediation, enabled CloudTrail and GuardDuty across all accounts, implemented encryption at rest and in transit, and set up automated compliance evidence collection for the auditor.</p>
+        <div class="case-results">
+          <div class="result-pill">SOC2 ready in 10 weeks</div>
+          <div class="result-pill">140 IAM issues resolved</div>
+          <div class="result-pill">$1.2M deal unlocked</div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">MLOps</div>
+        <h3>ML Model Goes from Notebook to 10K Daily Predictions in 3 Weeks</h3>
+        <p class="case-challenge"><strong style="color:var(--white)">Challenge:</strong> A data team at a logistics company had a churn prediction model with 87% accuracy sitting in a Jupyter notebook for 6 months. No production path had been identified.</p>
+        <p class="case-solution"><strong style="color:var(--white)">What We Did:</strong> Containerized the model, built a FastAPI serving layer on AWS ECS, set up an MLflow registry for version control, and implemented automated retraining triggered by data drift detection in production.</p>
+        <div class="case-results">
+          <div class="result-pill">3-week delivery</div>
+          <div class="result-pill">10K predictions/day</div>
+          <div class="result-pill">Automated retraining</div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">Multi-Cloud</div>
+        <h3>Healthcare SaaS Migrates to Multi-Cloud Without Service Interruption</h3>
+        <p class="case-challenge"><strong style="color:var(--white)">Challenge:</strong> A healthcare SaaS company needed to split workloads across AWS and Azure to meet data residency requirements from enterprise clients in three geographies.</p>
+        <p class="case-solution"><strong style="color:var(--white)">What We Did:</strong> Designed a multi-cloud architecture using Terraform for both platforms, implemented VPN-based inter-cloud connectivity, unified logging across both environments, and executed a phased migration with zero-downtime cutovers.</p>
+        <div class="case-results">
+          <div class="result-pill">Zero downtime migration</div>
+          <div class="result-pill">3 regions supported</div>
+          <div class="result-pill">HIPAA compliant</div>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">FinOps + DevOps</div>
+        <h3>Series A Startup Reduces Cloud Spend 31% While Doubling Engineering Output</h3>
+        <p class="case-challenge"><strong style="color:var(--white)">Challenge:</strong> A recently funded startup needed to extend their runway by reducing burn without slowing down engineering. Cloud and infrastructure were their second-largest expense.</p>
+        <p class="case-solution"><strong style="color:var(--white)">What We Did:</strong> Combined FinOps optimization (right-sizing, spot instances, S3 lifecycle policies) with full CI/CD automation to both cut costs and increase engineering throughput simultaneously over a 90-day engagement.</p>
+        <div class="case-results">
+          <div class="result-pill">31% cost reduction</div>
+          <div class="result-pill">2× engineering velocity</div>
+          <div class="result-pill">4-month runway extended</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <div class="cta-banner">
+    <h2>Ready to become the next case study?</h2>
+    <p>Book a free audit and we'll show you what results are realistic for your specific environment.</p>
+    <a href="#" onclick="show('contact')" class="btn-primary">Start with a Free Audit →</a>
+  </div>
+</div>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<div id="page-contact" class="page">
+  <section>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label">Get In Touch</div>
+        <h2>Let's talk about your infrastructure</h2>
+        <p>Tell us where you're feeling the most pain — cloud costs, slow deployments, security gaps, or AI stuck in notebooks. We'll respond within one business day with a clear next step.</p>
+        <div class="contact-item"><div class="c-icon">📧</div><div><strong>Email</strong><span>hello@clouderaplatform.com</span></div></div>
+        <div class="contact-item"><div class="c-icon">📞</div><div><strong>Call or WhatsApp</strong><span>+1 (555) 000-0000</span></div></div>
+        <div class="contact-item"><div class="c-icon">🕐</div><div><strong>Response Time</strong><span>We respond to all inquiries within 1 business day</span></div></div>
+        <div class="contact-item"><div class="c-icon">🌐</div><div><strong>We work globally</strong><span>Clients across North America, Europe, and Asia</span></div></div>
+        <div style="margin-top:2rem;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.2);border-radius:12px;padding:1.2rem;">
+          <strong style="font-size:.9rem;">Free Cloud Audit Includes:</strong>
+          <ul class="svc-list" style="margin-top:.6rem;">
+            <li>Cost breakdown and waste analysis</li>
+            <li>Security posture quick-scan</li>
+            <li>Top 3 highest-ROI recommendations</li>
+            <li>No obligation, no sales pressure</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-card">
+        <h3>Request Your Free Cloud Audit</h3>
+        <div class="form-group"><label>Full Name</label><input type="text" placeholder="Jane Smith"/></div>
+        <div class="form-group"><label>Work Email</label><input type="email" placeholder="jane@company.com"/></div>
+        <div class="form-group"><label>Company Name</label><input type="text" placeholder="Your Company"/></div>
+        <div class="form-group"><label>Cloud Platform</label>
+          <select><option>AWS</option><option>Azure</option><option>GCP</option><option>Multi-cloud</option><option>Not sure</option></select>
+        </div>
+        <div class="form-group"><label>Monthly Cloud Spend (approx.)</label>
+          <select><option>Under $5K/mo</option><option>$5K – $20K/mo</option><option>$20K – $100K/mo</option><option>$100K+/mo</option></select>
+        </div>
+        <div class="form-group"><label>Biggest Challenge Right Now</label>
+          <textarea placeholder="e.g. Our cloud bill has been growing 20% month-over-month and we don't know where to start..."></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;font-size:1rem;padding:.9rem;" onclick="this.textContent='✓ Submitted! We\'ll be in touch within 1 business day.';this.style.background='var(--green)'">Submit & Book Free Audit →</button>
+        <p style="font-size:.75rem;color:var(--gray);text-align:center;margin-top:.8rem;">No spam. No sales pitch. Just a straightforward conversation about your infrastructure.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="font-size:1.2rem;">Cloud<span>Era</span> Technology</div>
+      <p>Automate, Innovate, Scale. We help companies reduce cloud costs by 20–40% while building faster, more secure infrastructure.</p>
+    </div>
+    <div class="footer-col"><h4>Services</h4><a href="#" onclick="show('services')">Cost Optimization</a><a href="#" onclick="show('services')">DevOps & Automation</a><a href="#" onclick="show('services')">Cloud Security</a><a href="#" onclick="show('services')">MLOps & AI</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="#" onclick="show('about')">About Us</a><a href="#" onclick="show('cases')">Case Studies</a><a href="#" onclick="show('pricing')">Pricing</a><a href="#" onclick="show('contact')">Contact</a></div>
+    <div class="footer-col"><h4>Platforms</h4><a href="#">AWS</a><a href="#">Microsoft Azure</a><a href="#">Google Cloud</a><a href="#">Multi-Cloud</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 Cloud Era Technology. All rights reserved.</span><span>hello@clouderaplatform.com</span></div>
+</footer>
+
+<script>
+function show(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('nav-'+page).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  return false;
+}
+</script>
+</body>
+</html>
