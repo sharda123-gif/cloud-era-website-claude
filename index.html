@@ -583,7 +583,8 @@
         <div class="form-group"><label>Biggest Challenge Right Now</label>
           <textarea placeholder="e.g. Our cloud bill has been growing 20% month-over-month and we don't know where to start..."></textarea>
         </div>
-        <button class="btn-primary" style="width:100%;font-size:1rem;padding:.9rem;" onclick="this.textContent='✓ Submitted! We\'ll be in touch within 1 business day.';this.style.background='var(--green)'">Submit & Book Free Audit →</button>
+        <button class="btn-primary" id="submit-btn" style="width:100%;font-size:1rem;padding:.9rem;" onclick="submitForm()">Submit & Book Free Audit →</button>
+        <div id="form-msg" style="display:none;margin-top:1rem;padding:.9rem;border-radius:8px;text-align:center;font-size:.88rem;"></div>
         <p style="font-size:.75rem;color:var(--gray);text-align:center;margin-top:.8rem;">No spam. No sales pitch. Just a straightforward conversation about your infrastructure.</p>
       </div>
     </div>
@@ -605,6 +606,35 @@
 </footer>
 
 <script>
+async function submitForm(){
+  const btn = document.getElementById('submit-btn');
+  const msg = document.getElementById('form-msg');
+  const name = document.querySelector('input[placeholder="Jane Smith"]').value.trim();
+  const email = document.querySelector('input[placeholder="jane@company.com"]').value.trim();
+  const company = document.querySelector('input[placeholder="Your Company"]').value.trim();
+  if(!name||!email||!company){
+    msg.style.display='block';msg.style.background='rgba(255,80,80,.1)';msg.style.border='1px solid rgba(255,80,80,.3)';msg.style.color='#ff6b6b';
+    msg.textContent='Please fill in your name, email, and company name.';return;
+  }
+  const selects=document.querySelectorAll('select');
+  const textarea=document.querySelector('textarea');
+  const data={name,email,company,platform:selects[0].value,spend:selects[1].value,message:textarea.value};
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/xlgarrwb',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+    if(res.ok){
+      msg.style.display='block';msg.style.background='rgba(0,200,150,.1)';msg.style.border='1px solid rgba(0,200,150,.3)';msg.style.color='var(--green)';
+      msg.textContent='✓ Submitted! We\'ll be in touch within 1 business day.';
+      btn.textContent='✓ Submitted';btn.style.background='var(--green)';
+    } else {
+      throw new Error('Failed');
+    }
+  } catch(e){
+    msg.style.display='block';msg.style.background='rgba(255,80,80,.1)';msg.style.border='1px solid rgba(255,80,80,.3)';msg.style.color='#ff6b6b';
+    msg.textContent='Something went wrong. Please email us directly at contact@clouderatechnology.com';
+    btn.textContent='Submit & Book Free Audit →';btn.disabled=false;
+  }
+}
 function show(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
