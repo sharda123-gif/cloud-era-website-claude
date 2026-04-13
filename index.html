@@ -41,6 +41,18 @@
   .nav-links a{color:var(--gray);text-decoration:none;font-size:.9rem;font-weight:500;transition:.2s;}
   .nav-links a:hover{color:var(--accent);}
   .nav-cta{background:var(--grad);color:#fff;border:none;padding:.55rem 1.4rem;border-radius:6px;font-weight:600;cursor:pointer;font-size:.9rem;text-decoration:none;}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:.3s;}
+  .mobile-menu{display:none;flex-direction:column;background:var(--navy2);border-top:1px solid var(--border);padding:1rem 5%;gap:.2rem;}
+  .mobile-menu a{color:var(--gray);text-decoration:none;font-size:1rem;font-weight:500;padding:.7rem 0;border-bottom:1px solid var(--border);}
+  .mobile-menu a:last-child{border-bottom:none;}
+  .mobile-menu a:hover{color:var(--accent);}
+  .mobile-menu.open{display:flex;}
+  @media(max-width:900px){
+    .hamburger{display:flex;}
+    .nav-links{display:none;}
+    .nav-cta{display:none;}
+  }
 
   /* PAGES */
   .page{display:none;padding-top:68px;}
@@ -193,7 +205,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <img src="logo.png" alt="Cloud Era Technology" style="height:48px;width:auto;display:block;"/>
+    <div class="logo">Cloud<span>Era</span> Technology</div>
     <ul class="nav-links">
       <li><a href="#" onclick="show('home')" class="active" id="nav-home">Home</a></li>
       <li><a href="#" onclick="show('about')" id="nav-about">About</a></li>
@@ -204,6 +216,18 @@
       <li><a href="blog.html" target="_blank">Blog</a></li>
     </ul>
     <a href="#" onclick="show('contact')" class="nav-cta">Get Free Audit →</a>
+    <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="show('home');closeMenu()">Home</a>
+    <a href="#" onclick="show('about');closeMenu()">About</a>
+    <a href="#" onclick="show('services');closeMenu()">Services</a>
+    <a href="#" onclick="show('pricing');closeMenu()">Pricing</a>
+    <a href="#" onclick="show('cases');closeMenu()">Case Studies</a>
+    <a href="#" onclick="show('contact');closeMenu()">Contact</a>
+    <a href="blog.html">Blog</a>
   </div>
 </nav>
 
@@ -653,6 +677,13 @@ async function submitForm(){
     msg.textContent='Something went wrong. Please email us directly at contact@clouderatechnology.com';
     btn.textContent='Submit & Book Free Audit →';btn.disabled=false;
   }
+}
+function toggleMenu(){
+  const m=document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
 }
 function show(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
